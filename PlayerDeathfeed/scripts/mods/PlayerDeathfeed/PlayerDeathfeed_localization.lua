@@ -94,8 +94,11 @@ local localizations = {
 	barrel_explosion = {
 		en = "Barrel",
 	},
-	liquid_area_fire_burning = {
-		en = "Fire",
+	fire_barrel_explosion_close = {
+		en = "Fire Barrel",
+	},
+	fire_barrel_explosion = {
+		en = "Fire Barrel",
 	},
 	liquid_area_fire_burning = {
 		en = "Fire",
