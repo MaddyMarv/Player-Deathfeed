@@ -26,6 +26,17 @@ local damage_history = {}
 
 local dmg_hist_count = 0
 
+local function readable(text)
+    local readable_string = ""
+    local tokens = string.split(text, "_")
+    for i, token in ipairs(tokens) do
+        local first_letter = string.sub(token, 1, 1)
+        token = string.format("%s%s", string.upper(first_letter), string.sub(token, 2))
+        readable_string = string.trim(string.format("%s %s", readable_string, token))
+    end
+    return readable_string
+end
+
 mod:hook_safe(CLASS.PlayerCharacterStateDead, "on_exit", function(self, unit, dt, t, previous_state, params)
 	local the_unit = Managers.player:player_by_unit(unit)
 	if the_unit then
@@ -114,9 +125,13 @@ function parse_damage_history(damage_hist, player)
 			local killer_breed_or_nil = killer_unit_data_extension and killer_unit_data_extension:breed()
 			local killer_name
 			
-			local damage_profile = damage_hist[event].damage_profile.name
+			local damage_profile_name = damage_hist[event].damage_profile.name
 			local damage = damage_hist[event].damage
-			damage_profile = mod:localize(damage_profile)
+			local damage_profile = mod:localize(damage_profile_name)
+			
+			if type(damage_profile) == "string" and string.find(damage_profile, "^<") then
+				damage_profile = readable(damage_profile_name)
+			end
 			
 			if damage > 0 then
 				if killer_breed_or_nil then 
@@ -264,6 +279,10 @@ mod:hook_safe("AttackReportManager", "_process_attack_result", function (self, b
 				local dead_or_down
 				local damage = damage_amount
 				local damage_profile = mod:localize(damage_profile_name)
+				
+				if type(damage_profile) == "string" and string.find(damage_profile, "^<") then
+					damage_profile = readable(damage_profile_name)
+				end
 				
 				local killers_text
 				if mod:get("detailed_notification") then
