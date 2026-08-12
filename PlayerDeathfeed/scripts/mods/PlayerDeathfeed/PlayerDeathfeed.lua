@@ -7,7 +7,7 @@ local CombatFeed = require("scripts/ui/hud/elements/combat_feed/hud_element_comb
 local NotificationFeed = require("scripts/ui/constant_elements/elements/notification_feed/constant_element_notification_feed")
 local HudElementCombatFeedSettings = require("scripts/ui/hud/elements/combat_feed/hud_element_combat_feed_settings")
 local Breed = require("scripts/utilities/breed")
-
+local Breeds = require("scripts/settings/breed/breeds")
 local UISettings = require("scripts/settings/ui/ui_settings")
 local TextUtilities = require("scripts/utilities/ui/text")
 
@@ -26,7 +26,20 @@ local damage_history = {}
 
 local dmg_hist_count = 0
 
+local breed_prefixes = {}
+for breed_name, _ in pairs(Breeds) do
+	breed_prefixes[#breed_prefixes + 1] = breed_name .. "_"
+end
+table.sort(breed_prefixes, function(a, b) return #a > #b end)
+
 local function readable(text)
+	for i = 1, #breed_prefixes do
+		if string.find(text, "^" .. breed_prefixes[i]) then
+			text = string.gsub(text, "^" .. breed_prefixes[i], "")
+			break
+		end
+	end
+
     local readable_string = ""
     local tokens = string.split(text, "_")
     for i, token in ipairs(tokens) do
