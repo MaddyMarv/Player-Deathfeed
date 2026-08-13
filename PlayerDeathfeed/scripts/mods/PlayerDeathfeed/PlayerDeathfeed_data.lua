@@ -116,7 +116,60 @@ return {
 
 				},
 			},
-
+			{
+				setting_id = "disabled",
+				type = "group",
+				sub_widgets = {
+					{
+						setting_id = "disabled_show_killfeed",
+						type = "checkbox",
+						default_value = true,
+					},
+					{
+						setting_id = "disabled_show_notification",
+						type = "checkbox",
+						default_value = true,
+					},
+					{
+						setting_id = "disabled_show_chat",
+						type = "checkbox",
+						default_value = false,
+					},
+					{
+						setting_id = "disabled_color",
+						type = "dropdown",
+						default_value = "item_rarity_dark_5",
+						options = get_color_options()
+					},
+				},
+			},
+			{
+				setting_id = "helped",
+				type = "group",
+				sub_widgets = {
+					{
+						setting_id = "helped_show_killfeed",
+						type = "checkbox",
+						default_value = true,
+					},
+					{
+						setting_id = "helped_show_notification",
+						type = "checkbox",
+						default_value = true,
+					},
+					{
+						setting_id = "helped_show_chat",
+						type = "checkbox",
+						default_value = false,
+					},
+					{
+						setting_id = "helped_color",
+						type = "dropdown",
+						default_value = "item_rarity_dark_3",
+						options = get_color_options()
+					},
+				},
+			},
 		},
 	},
 }

@@ -74,6 +74,42 @@ local localizations = {
 	echo_note = {
 		en = "Echo Notification in Private Chat",
 	},
+	disabled = {
+		en = "Disabled Options:",
+	},
+	disabled_show_killfeed = {
+		en = "Report in Killfeed",
+	},
+	disabled_show_notification = {
+		en = "Report in Notifications",
+	},
+	disabled_show_chat = {
+		en = "Echo in Private Chat",
+	},
+	disabled_color = {
+		en = "Background Color: Disabled",
+	},
+	helped = {
+		en = "Helped Up Options:",
+	},
+	helped_show_killfeed = {
+		en = "Report in Killfeed",
+	},
+	helped_show_notification = {
+		en = "Report in Notifications",
+	},
+	helped_show_chat = {
+		en = "Echo in Private Chat",
+	},
+	helped_color = {
+		en = "Background Color: Helped Up",
+	},
+	disabled_feed_message = {
+		en = "%s was %s!",
+	},
+	helped_feed_message = {
+		en = "%s helped up %s",
+	},
 }
 
 local function readable(text)

@@ -395,3 +395,127 @@ mod:hook_safe("AttackReportManager", "_process_attack_result", function (self, b
 		end
 	end
 end)
+
+local function get_disabled_state(unit)
+	if not unit or not HEALTH_ALIVE[unit] then return nil end
+	local health_extension = ScriptUnit.has_extension(unit, "health_system") and ScriptUnit.extension(unit, "health_system")
+	if not (health_extension and health_extension.is_alive and health_extension:is_alive()) then return nil end
+	
+	local uds = ScriptUnit.has_extension(unit, "unit_data_system") and ScriptUnit.extension(unit, "unit_data_system")
+	if not uds or not uds.read_component then return nil end
+	
+	local cs = uds:read_component("character_state")
+	if not cs then return nil end
+	
+	local state_name = cs.state_name
+	if PlayerUnitStatus.is_disabled(cs) and state_name ~= "dead" then
+		return state_name
+	end
+	return nil
+end
+
+mod._last_player_states = {}
+
+local function send_notification_packet(player, line_1, line_2, color_setting_name, show_notification)
+	if not show_notification then return end
+	local packet = {
+		player = player,
+		line_1 = line_1,
+		line_2 = line_2,
+		show_shine = true,
+		color = Color[mod:get(color_setting_name) or "item_rarity_dark_5"](100, true)
+	}
+	Managers.event:trigger("event_add_notification_message", "custom", packet)
+end
+
+local ICONS_WITH_DISTINCT_PLAIN = {
+    pounced = true,
+    consumed = true,
+    grabbed = true,
+    knocked_down = true,
+    netted = true,
+    ledge_hanging = true,
+    mutant_charged = true,
+    hogtied = true,
+}
+
+mod.update = function(dt)
+	local player_manager = Managers.player
+	if not player_manager then return end
+	local players = player_manager:players()
+	if not players then return end
+
+	for unique_id, player in pairs(players) do
+		local unit = player.player_unit
+		if unit then
+			local current_state = get_disabled_state(unit)
+			local previous_state = mod._last_player_states[unique_id]
+			
+			if current_state ~= previous_state then
+				-- They just entered a disabled state
+				if current_state and ICONS_WITH_DISTINCT_PLAIN[current_state] then
+					if not previous_state or not ICONS_WITH_DISTINCT_PLAIN[previous_state] then
+						local clean_state = string.gsub(current_state, "_", " ")
+						clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
+						
+						local text = mod:localize("disabled_feed_message", player:name(), clean_state)
+						
+						if mod:get("disabled_show_killfeed") then
+							Managers.event:trigger("event_add_combat_feed_message", text)
+						end
+						
+						send_notification_packet(player, text, nil, "disabled_color", mod:get("disabled_show_notification"))
+						
+						if mod:get("disabled_show_chat") then
+							mod:echo(text)
+						end
+					end
+				end
+				mod._last_player_states[unique_id] = current_state
+			end
+		end
+	end
+end
+
+local function handle_interaction_stopped(self, result, interactor_unit)
+	if result == "success" then
+		local interaction_type = self._active_interaction_type
+		if not interaction_type or interaction_type == "none" then
+			if self.interaction_type then
+				interaction_type = self:interaction_type()
+			end
+		end
+		
+		if interaction_type == "revive" or interaction_type == "remove_net" or interaction_type == "pull_up" or interaction_type == "rescue" then
+			local interactee_unit = self._unit
+			local interactor = interactor_unit or self._interactor_unit
+			
+			if interactee_unit and interactor then
+				local interactee_player = Managers.player:player_by_unit(interactee_unit)
+				local interactor_player = Managers.player:player_by_unit(interactor)
+				
+				if interactee_player and interactor_player then
+					local text = mod:localize("helped_feed_message", interactor_player:name(), interactee_player:name())
+					
+					if mod:get("helped_show_killfeed") then
+						Managers.event:trigger("event_add_combat_feed_message", text)
+					end
+					
+					send_notification_packet(interactor_player, text, nil, "helped_color", mod:get("helped_show_notification"))
+					
+					if mod:get("helped_show_chat") then
+						mod:echo(text)
+					end
+				end
+			end
+		end
+	end
+end
+
+mod:hook_safe("InteracteeExtension", "stopped", function(self, result, interactor_unit)
+	handle_interaction_stopped(self, result, interactor_unit)
+end)
+
+mod:hook_safe("PlayerInteracteeExtension", "stopped", function(self, result, interactor_unit)
+	handle_interaction_stopped(self, result, interactor_unit)
+end)
