@@ -32,13 +32,66 @@ for breed_name, _ in pairs(Breeds) do
 end
 table.sort(breed_prefixes, function(a, b) return #a > #b end)
 
+local profile_overrides = {
+	poxwalker = "melee",
+	mutated_poxwalker = "melee",
+	lesser_mutated_poxwalker = "melee",
+	default = "melee",
+	default_rifleman = "melee",
+	minion_instakill = "instakill",
+	kill_volume_and_off_navmesh = "out_of_bounds",
+	kill_volume_with_gibbing = "out_of_bounds",
+	falling_light = "fall_damage",
+	knocked_down_tick = "bleeding_out",
+	chaos_ogryn_houndmaster_moving = "trampled",
+	chaos_ogryn_executor_default = "melee",
+	chaos_ogryn_houndmaster_default = "melee",
+	beast_of_nurgle_self_gib = "explosion",
+	havoc_self_gib = "explosion",
+	poxwalker_bomber_instakill = "explosion",
+	overheat_exploding_tick = "overheat_DoT",
+	warp_charge_exploding_tick = "perils_of_the_warp",
+	horde_mode_self_propagating_toxin = "toxic_gas",
+	mutator_gas_normal_damage = "toxic_gas",
+	toxic_gas_mutator = "toxic_gas",
+	live_event_saints_out_of_area_debuff_damage_template = "corruption",
+}
+
 local function readable(text)
+	if profile_overrides[text] then
+		text = profile_overrides[text]
+	end
+
 	for i = 1, #breed_prefixes do
 		if string.find(text, "^" .. breed_prefixes[i]) then
 			text = string.gsub(text, "^" .. breed_prefixes[i], "")
 			break
 		end
 	end
+	text = string.gsub(text, "^daemonhost_", "")
+	text = string.gsub(text, "^beast_of_nurgle_", "")
+	text = string.gsub(text, "^twin_captain_two_", "")
+	text = string.gsub(text, "^twin_", "")
+
+	text = string.gsub(text, "executor_", "")
+	text = string.gsub(text, "roamer_", "")
+	text = string.gsub(text, "berzerker_", "")
+	text = string.gsub(text, "bruiser_", "")
+	text = string.gsub(text, "fighter_", "")
+	text = string.gsub(text, "sniper_", "")
+	text = string.gsub(text, "shocktrooper_", "")
+	text = string.gsub(text, "poxwalker_", "")
+	text = string.gsub(text, "gunner_", "")
+	text = string.gsub(text, "bulwark_", "")
+
+	text = string.gsub(text, "_close", "")
+	text = string.gsub(text, "_mild", "")
+	text = string.gsub(text, "_default", "")
+	text = string.gsub(text, "liquid_area_fire_burning", "fire")
+	text = string.gsub(text, "liquid_fire_burning", "fire")
+	text = string.gsub(text, "offtarget_", "")
+	text = string.gsub(text, "toxin_variant_%d", "toxin")
+	text = string.gsub(text, "hordes_buff_.*reflection_hit", "damage_reflection")
 
     local readable_string = ""
     local tokens = string.split(text, "_")
