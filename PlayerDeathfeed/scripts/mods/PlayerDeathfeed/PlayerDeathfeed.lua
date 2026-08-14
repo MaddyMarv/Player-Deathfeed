@@ -444,7 +444,8 @@ mod.update = function(dt)
 					local clean_state = string.gsub(current_state, "_", " ")
 					clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
 					
-					local text = mod:localize("disabled_feed_message", player:name(), clean_state)
+					local player_name = CombatFeed._get_unit_presentation_name(CombatFeed, unit) or player:name()
+					local text = mod:localize("disabled_feed_message", player_name, clean_state)
 					
 					if mod:get("disabled_show_killfeed") then
 						Managers.event:trigger("event_add_combat_feed_message", text)
@@ -480,7 +481,9 @@ local function handle_interaction_stopped(self, result, interactor_unit)
 				local interactor_player = Managers.player:player_by_unit(interactor)
 				
 				if interactee_player and interactor_player then
-					local text = mod:localize("helped_feed_message", interactor_player:name(), interactee_player:name())
+					local interactor_name = CombatFeed._get_unit_presentation_name(CombatFeed, interactor) or interactor_player:name()
+					local interactee_name = CombatFeed._get_unit_presentation_name(CombatFeed, interactee_unit) or interactee_player:name()
+					local text = mod:localize("helped_feed_message", interactor_name, interactee_name)
 					
 					if mod:get("helped_show_killfeed") then
 						Managers.event:trigger("event_add_combat_feed_message", text)
