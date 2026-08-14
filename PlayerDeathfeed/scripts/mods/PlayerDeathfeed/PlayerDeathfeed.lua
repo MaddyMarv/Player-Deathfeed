@@ -336,7 +336,7 @@ mod:hook_safe("AttackReportManager", "_process_attack_result", function (self, b
 			
 			local killed_is_disabled
 			if PlayerUnitStatus.is_disabled(killed_character_state_component) then killed_is_disabled = killed_character_state_component.state_name end
-			if killed_is_disabled == "dead" then killed_is_disabled = nil end
+			if killed_is_disabled == "dead" or killed_is_disabled == "knocked_down" then killed_is_disabled = nil end
 			
 			local damage_amount = string.format("%.0f", buffer_data.damage)
 			local damage_profile_name = buffer_data.damage_profile.name
@@ -358,7 +358,6 @@ mod:hook_safe("AttackReportManager", "_process_attack_result", function (self, b
 				end
 				
 				killed_is_dead = PlayerUnitStatus.is_dead(killed_character_state_component)		
-				if not killed_is_dead and killed_is_disabled == "knocked_down" then killed_is_disabled = nil end
 				
 				if not killer_breed_or_nil then
 					if killed_is_dead then dead_or_down = " has Died" else dead_or_down = " was Knocked Down" end
@@ -408,7 +407,7 @@ local function get_disabled_state(unit)
 	if not cs then return nil end
 	
 	local state_name = cs.state_name
-	if PlayerUnitStatus.is_disabled(cs) and state_name ~= "dead" then
+	if PlayerUnitStatus.is_disabled(cs) and state_name ~= "dead" and state_name ~= "knocked_down" then
 		return state_name
 	end
 	return nil
@@ -428,17 +427,6 @@ local function send_notification_packet(player, line_1, line_2, color_setting_na
 	Managers.event:trigger("event_add_notification_message", "custom", packet)
 end
 
-local ICONS_WITH_DISTINCT_PLAIN = {
-    pounced = true,
-    consumed = true,
-    grabbed = true,
-    knocked_down = true,
-    netted = true,
-    ledge_hanging = true,
-    mutant_charged = true,
-    hogtied = true,
-}
-
 mod.update = function(dt)
 	local player_manager = Managers.player
 	if not player_manager then return end
@@ -452,23 +440,20 @@ mod.update = function(dt)
 			local previous_state = mod._last_player_states[unique_id]
 			
 			if current_state ~= previous_state then
-				-- They just entered a disabled state
-				if current_state and ICONS_WITH_DISTINCT_PLAIN[current_state] then
-					if not previous_state or not ICONS_WITH_DISTINCT_PLAIN[previous_state] then
-						local clean_state = string.gsub(current_state, "_", " ")
-						clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
-						
-						local text = mod:localize("disabled_feed_message", player:name(), clean_state)
-						
-						if mod:get("disabled_show_killfeed") then
-							Managers.event:trigger("event_add_combat_feed_message", text)
-						end
-						
-						send_notification_packet(player, text, nil, "disabled_color", mod:get("disabled_show_notification"))
-						
-						if mod:get("disabled_show_chat") then
-							mod:echo(text)
-						end
+				if current_state then
+					local clean_state = string.gsub(current_state, "_", " ")
+					clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
+					
+					local text = mod:localize("disabled_feed_message", player:name(), clean_state)
+					
+					if mod:get("disabled_show_killfeed") then
+						Managers.event:trigger("event_add_combat_feed_message", text)
+					end
+					
+					send_notification_packet(player, text, nil, "disabled_color", mod:get("disabled_show_notification"))
+					
+					if mod:get("disabled_show_chat") then
+						mod:echo(text)
 					end
 				end
 				mod._last_player_states[unique_id] = current_state
@@ -518,4 +503,4 @@ end)
 
 mod:hook_safe("PlayerInteracteeExtension", "stopped", function(self, result, interactor_unit)
 	handle_interaction_stopped(self, result, interactor_unit)
-end)
+end)
