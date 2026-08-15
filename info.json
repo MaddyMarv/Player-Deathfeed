@@ -1,0 +1,14 @@
+{
+    "name": "Player Deathfeed",
+    "author": "IndicaBunny",
+    "version": "2.8",
+    "source": "https://github.com/MaddyMarv/Player-Deathfeed",
+    "kofi": "https://ko-fi.com/indicabunny",
+    "description": "Shows player and teammate deaths and downs in killfeed and/or notifications.",
+    "order": {
+        "require": [],
+        "this_before": [],
+        "this_after": []
+    },
+    "localization": {}
+}
