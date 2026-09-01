@@ -164,6 +164,7 @@ return {
 					},
 					{
 						setting_id = "helped_hide_self_notification",
+						tooltip = "helped_hide_self_description",
 						type = "checkbox",
 						default_value = true,
 					},

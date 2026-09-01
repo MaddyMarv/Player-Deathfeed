@@ -18,7 +18,7 @@ local localizations = {
 		en = "Ignore Bots",
 	},
 	ignore_bots_description = {
-		en = "Suppresses bot deaths, knockdowns, disabled states, and assists.\n\nBots reviving, freeing, or pulling up human players will still be announced.",
+		en = "Suppresses bot deaths, knockdowns, disabled states, and assists.\nBots reviving, freeing, or pulling up human players will still be announced.",
 	},
 	echo_feed = {
 		en = "Echo Killfeed in Private Chat",
@@ -100,6 +100,9 @@ local localizations = {
 	},
 	helped_hide_self_notification = {
 		en = "Hide Notification When You Are Helped",
+	},
+	helped_hide_self_description = {
+		en = "Suppresses the mod's duplicate notification when a teammate assists you, allowing the base game's assist banner to display on its own.",
 	},
 	helped_show_chat = {
 		en = "Echo in Private Chat",
