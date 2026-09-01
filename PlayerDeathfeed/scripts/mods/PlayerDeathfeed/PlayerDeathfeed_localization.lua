@@ -1,6 +1,3 @@
-
-local InputUtils = require("scripts/managers/input/input_utils")
-
 local localizations = {
 	mod_name = {
 		en = "Player Deathfeed",
@@ -8,59 +5,41 @@ local localizations = {
 	mod_description = {
 		en = "Shows player downs and deaths in killfeed and/or popup notifications.",
 	},
-	general = {
-		en = "General Options:",
+	tab_deaths_knockdowns = {
+		en = "Deaths & Knockdowns",
+	},
+	tab_disabled_helped = {
+		en = "Disabled & Helped",
+	},
+	general_group = {
+		en = "General Settings",
 	},
 	ignore_bots = {
-		en = "Ignore Bots Completely",
+		en = "Ignore Bots",
 	},
-	killfeed = {
-		en = "Killfeed Options:",
+	ignore_bots_description = {
+		en = "Suppresses bot deaths, knockdowns, disabled states, and assists.\n\nBots reviving, freeing, or pulling up human players will still be announced.",
+	},
+	echo_feed = {
+		en = "Echo Killfeed in Private Chat",
+	},
+	killfeed_group = {
+		en = "Killfeed Options",
 	},
 	show_killfeed = {
 		en = "Report in Killfeed",
 	},
-	report_down_feed = {
-		en = "Report: Knockdowns",
-	},
-	report_death_feed = {
-		en = "Report: Deaths",
-	},
 	show_type_feed = {
-		en = "Show: Attack Information",
+		en = "Show Attack Information",
 	},
 	show_damage_feed = {
-		en = "Show: Damage Amount",
+		en = "Show Damage Amount",
 	},
-	notification = {
-		en = "Notification Options:",
+	notification_group = {
+		en = "Popup Notification Options",
 	},
 	show_notification = {
 		en = "Report in Notifications",
-	},
-	report_down_notification = {
-		en = "Report: Knockdowns",
-	},
-	dead_color = {
-		en = "Background Color: Death",
-	},
-	knock_color = {
-		en = "Background Color: Knock Down",
-	},
-	report_death_notification = {
-		en = "Report: Deaths",
-	},
-	show_type_note = {
-		en = "Show Attack Information",
-	},
-	show_damage_note = {
-		en = "Show Damage Amount",
-	},
-	show_disabled_note = {
-		en = "Show Disabled State",
-	},
-	note_time = {
-		en = "Notification Display Duration (sec)",
 	},
 	detailed_notification = {
 		en = "Detailed Report",
@@ -71,17 +50,29 @@ local localizations = {
 	damage_window = {
 		en = "Detailed Report Recording Period (sec)",
 	},
-	echo = {
-		en = "Echo",
+	note_time = {
+		en = "Notification Display Duration (sec)",
 	},
-	echo_feed = {
-		en = "Echo Killfeed in Private Chat",
+	show_type_note = {
+		en = "Show Attack Information",
 	},
-	echo_note = {
-		en = "Echo Notification in Private Chat",
+	show_damage_note = {
+		en = "Show Damage Amount",
 	},
-	disabled = {
-		en = "Disabled Options:",
+	show_disabled_note = {
+		en = "Show Disabled State",
+	},
+	notification_colors_group = {
+		en = "Notification Colors",
+	},
+	knockdown_color = {
+		en = "Knock Down Color",
+	},
+	death_color = {
+		en = "Death Color",
+	},
+	disabled_group = {
+		en = "Disabled State Tracking",
 	},
 	disabled_show_killfeed = {
 		en = "Report in Killfeed",
@@ -95,11 +86,11 @@ local localizations = {
 	ignore_catapulted = {
 		en = "Ignore Catapulted State",
 	},
-	disabled_color = {
-		en = "Background Color: Disabled",
+	disabled_notification_color = {
+		en = "Disabled Notification Color",
 	},
-	helped = {
-		en = "Helped Up Options:",
+	helped_group = {
+		en = "Helped Up Tracking",
 	},
 	helped_show_killfeed = {
 		en = "Report in Killfeed",
@@ -107,11 +98,14 @@ local localizations = {
 	helped_show_notification = {
 		en = "Report in Notifications",
 	},
+	helped_hide_self_notification = {
+		en = "Hide Notification When You Are Helped",
+	},
 	helped_show_chat = {
 		en = "Echo in Private Chat",
 	},
-	helped_color = {
-		en = "Background Color: Helped Up",
+	helped_notification_color = {
+		en = "Helped Up Notification Color",
 	},
 	disabled_feed_message = {
 		en = "%s was %s!",
@@ -120,26 +114,5 @@ local localizations = {
 		en = "%s helped up %s",
 	},
 }
-
-local function readable(text)
-    local readable_string = ""
-    local tokens = string.split(text, "_")
-    for i, token in ipairs(tokens) do
-        local first_letter = string.sub(token, 1, 1)
-        token = string.format("%s%s", string.upper(first_letter), string.sub(token, 2))
-        readable_string = string.trim(string.format("%s %s", readable_string, token))
-    end
-
-    return readable_string
-end
-
-local color_names = Color.list
-for i, color_name in ipairs(color_names) do
-	local color_values = Color[color_name](100, true)
-	local text = InputUtils.apply_color_to_input_text(readable(color_name), color_values)
-	localizations[color_name] = {
-		en = text
-	}
-end
 
 return localizations

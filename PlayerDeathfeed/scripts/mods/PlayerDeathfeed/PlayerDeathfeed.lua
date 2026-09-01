@@ -168,8 +168,8 @@ local function make_text_packet(text, killed_unit, dead_or_down, damage_profile,
 		player = killed_unit,
 		line_1 = text,
 		show_shine = true,
+		color = dead_or_down and (mod:get("death_color") or { 100, 119, 31, 31 }) or (mod:get("knockdown_color") or { 100, 128, 84, 30 }),
 	}
-	if dead_or_down then packet.color = Color[mod:get("dead_color")](100,true) else packet.color = Color[mod:get("knock_color")](100,true) end
 	if mod:get("show_disabled_note") and killed_is_disabled then 
 		local clean_state = string.gsub(killed_is_disabled, "_", " ")
 		clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
@@ -430,14 +430,14 @@ end
 
 mod._last_player_states = {}
 
-local function send_notification_packet(player, line_1, line_2, color_setting_name, show_notification)
+local function send_notification_packet(player, line_1, line_2, color_setting_name, show_notification, default_color)
 	if not show_notification then return end
 	local packet = {
 		player = player,
 		line_1 = line_1,
 		line_2 = line_2,
 		show_shine = true,
-		color = Color[mod:get(color_setting_name) or "item_rarity_dark_5"](100, true)
+		color = mod:get(color_setting_name) or default_color,
 	}
 	Managers.event:trigger("event_add_notification_message", "custom", packet)
 end
@@ -467,7 +467,7 @@ mod.update = function(dt)
 							Managers.event:trigger("event_add_combat_feed_message", text)
 						end
 						
-						send_notification_packet(player, text, nil, "disabled_color", mod:get("disabled_show_notification"))
+						send_notification_packet(player, text, nil, "disabled_notification_color", mod:get("disabled_show_notification"), { 100, 128, 84, 30 })
 						
 						if mod:get("disabled_show_chat") then
 							mod:echo(text)
@@ -498,7 +498,7 @@ local function handle_interaction_stopped(self, result, interactor_unit)
 				local interactor_player = Managers.player:player_by_unit(interactor)
 				
 				if interactee_player and interactor_player then
-					if mod:get("ignore_bots") and (is_bot(interactee_player) or is_bot(interactor_player)) then
+					if mod:get("ignore_bots") and is_bot(interactee_player) then
 						return
 					end
 					
@@ -510,7 +510,12 @@ local function handle_interaction_stopped(self, result, interactor_unit)
 						Managers.event:trigger("event_add_combat_feed_message", text)
 					end
 					
-					send_notification_packet(interactor_player, text, nil, "helped_color", mod:get("helped_show_notification"))
+					local local_player = Managers.player and Managers.player:local_player(1)
+					local is_helped_self = (interactee_player == local_player) or (local_player and interactee_unit == local_player.player_unit)
+					local is_assisted_by_human = not is_bot(interactor_player)
+					local show_notification = mod:get("helped_show_notification") and not (mod:get("helped_hide_self_notification") and is_helped_self and is_assisted_by_human)
+					
+					send_notification_packet(interactor_player, text, nil, "helped_notification_color", show_notification, { 100, 49, 86, 129 })
 					
 					if mod:get("helped_show_chat") then
 						mod:echo(text)
