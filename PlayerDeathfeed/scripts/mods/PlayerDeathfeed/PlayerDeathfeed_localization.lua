@@ -116,6 +116,9 @@ local localizations = {
 	disabled_feed_message = {
 		en = "%s was %s!",
 	},
+	disabled_feed_message_is = {
+		en = "%s is %s!",
+	},
 	helped_feed_message = {
 		en = "%s helped up %s",
 	},

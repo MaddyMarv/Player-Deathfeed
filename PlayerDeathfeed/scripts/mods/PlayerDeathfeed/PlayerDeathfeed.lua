@@ -461,7 +461,12 @@ mod.update = function(dt)
 						clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
 						
 						local player_name = CombatFeed._get_unit_presentation_name(CombatFeed, unit) or player:name()
-						local text = mod:localize("disabled_feed_message", player_name, clean_state)
+						local text
+						if current_state == "ledge_hanging" then
+							text = mod:localize("disabled_feed_message_is", player_name, clean_state)
+						else
+							text = mod:localize("disabled_feed_message", player_name, clean_state)
+						end
 						
 						if mod:get("disabled_show_killfeed") then
 							Managers.event:trigger("event_add_combat_feed_message", text)
