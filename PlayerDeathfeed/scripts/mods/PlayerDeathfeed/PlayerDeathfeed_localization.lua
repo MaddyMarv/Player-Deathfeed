@@ -11,6 +11,9 @@ local localizations = {
 	tab_disabled_helped = {
 		en = "Disabled & Helped",
 	},
+	tab_general = {
+		en = "General",
+	},
 	general_group = {
 		en = "General Settings",
 	},

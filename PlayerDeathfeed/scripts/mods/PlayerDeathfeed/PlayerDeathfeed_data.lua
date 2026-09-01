@@ -9,7 +9,7 @@ return {
 			{
 				setting_id = "general_group",
 				type = "group",
-				tab = "Deaths & Knockdowns",
+				tab = mod:localize("tab_general"),
 				sub_widgets = {
 					{
 						setting_id = "ignore_bots",
@@ -22,7 +22,7 @@ return {
 			{
 				setting_id = "killfeed_group",
 				type = "group",
-				tab = "Deaths & Knockdowns",
+				tab = mod:localize("tab_deaths_knockdowns"),
 				sub_widgets = {
 					{
 						setting_id = "show_killfeed",
@@ -49,7 +49,7 @@ return {
 			{
 				setting_id = "notification_group",
 				type = "group",
-				tab = "Deaths & Knockdowns",
+				tab = mod:localize("tab_deaths_knockdowns"),
 				sub_widgets = {
 					{
 						setting_id = "show_notification",
@@ -98,7 +98,7 @@ return {
 			{
 				setting_id = "notification_colors_group",
 				type = "group",
-				tab = "Deaths & Knockdowns",
+				tab = mod:localize("tab_deaths_knockdowns"),
 				sub_widgets = {
 					{
 						setting_id = "knockdown_color",
@@ -117,7 +117,7 @@ return {
 			{
 				setting_id = "disabled_group",
 				type = "group",
-				tab = "Disabled & Helped",
+				tab = mod:localize("tab_disabled_helped"),
 				sub_widgets = {
 					{
 						setting_id = "disabled_show_killfeed",
@@ -150,7 +150,7 @@ return {
 			{
 				setting_id = "helped_group",
 				type = "group",
-				tab = "Disabled & Helped",
+				tab = mod:localize("tab_disabled_helped"),
 				sub_widgets = {
 					{
 						setting_id = "helped_show_killfeed",
