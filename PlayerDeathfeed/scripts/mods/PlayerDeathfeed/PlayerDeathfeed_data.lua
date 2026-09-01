@@ -25,6 +25,17 @@ return {
 	options = {
 		widgets = {
 			{
+				setting_id = "general",
+				type = "group",
+				sub_widgets = {
+					{
+						setting_id = "ignore_bots",
+						type = "checkbox",
+						default_value = true,
+					},
+				},
+			},
+			{
 				setting_id = "killfeed",
 				type = "group",
 				sub_widgets = {
@@ -134,6 +145,11 @@ return {
 						setting_id = "disabled_show_chat",
 						type = "checkbox",
 						default_value = false,
+					},
+					{
+						setting_id = "ignore_catapulted",
+						type = "checkbox",
+						default_value = true,
 					},
 					{
 						setting_id = "disabled_color",

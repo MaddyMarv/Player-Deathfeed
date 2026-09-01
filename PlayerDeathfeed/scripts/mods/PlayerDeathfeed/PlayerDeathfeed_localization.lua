@@ -8,6 +8,12 @@ local localizations = {
 	mod_description = {
 		en = "Shows player downs and deaths in killfeed and/or popup notifications.",
 	},
+	general = {
+		en = "General Options:",
+	},
+	ignore_bots = {
+		en = "Ignore Bots Completely",
+	},
 	killfeed = {
 		en = "Killfeed Options:",
 	},
@@ -85,6 +91,9 @@ local localizations = {
 	},
 	disabled_show_chat = {
 		en = "Echo in Private Chat",
+	},
+	ignore_catapulted = {
+		en = "Ignore Catapulted State",
 	},
 	disabled_color = {
 		en = "Background Color: Disabled",

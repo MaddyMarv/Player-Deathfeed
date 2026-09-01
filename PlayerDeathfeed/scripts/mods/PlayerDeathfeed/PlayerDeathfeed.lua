@@ -105,6 +105,17 @@ local function readable(text)
     return readable_string
 end
 
+local function is_bot(player)
+	if not player then return false end
+	if player.is_human_controlled then
+		return not player:is_human_controlled()
+	end
+	if player.type then
+		return player:type() == "BotPlayer"
+	end
+	return false
+end
+
 mod:hook_safe(CLASS.PlayerCharacterStateDead, "on_exit", function(self, unit, dt, t, previous_state, params)
 	local the_unit = Managers.player:player_by_unit(unit)
 	if the_unit then
@@ -294,6 +305,7 @@ mod:hook_safe("AttackReportManager", "_process_attack_result", function (self, b
 		local player_unit_spawn_manager = Managers.state.player_unit_spawn
 		local attacked_player = player_unit_spawn_manager:owner(attacked_unit)
 		if not attacked_player then return end
+		if mod:get("ignore_bots") and is_bot(attacked_player) then return end
 		local player_name = attacked_player:name()
 		
 		if mod:get("detailed_notification") then
@@ -408,6 +420,9 @@ local function get_disabled_state(unit)
 	
 	local state_name = cs.state_name
 	if PlayerUnitStatus.is_disabled(cs) and state_name ~= "dead" and state_name ~= "knocked_down" then
+		if mod:get("ignore_catapulted") and state_name == "catapulted" then
+			return nil
+		end
 		return state_name
 	end
 	return nil
@@ -434,30 +449,32 @@ mod.update = function(dt)
 	if not players then return end
 
 	for unique_id, player in pairs(players) do
-		local unit = player.player_unit
-		if unit then
-			local current_state = get_disabled_state(unit)
-			local previous_state = mod._last_player_states[unique_id]
-			
-			if current_state ~= previous_state then
-				if current_state then
-					local clean_state = string.gsub(current_state, "_", " ")
-					clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
-					
-					local player_name = CombatFeed._get_unit_presentation_name(CombatFeed, unit) or player:name()
-					local text = mod:localize("disabled_feed_message", player_name, clean_state)
-					
-					if mod:get("disabled_show_killfeed") then
-						Managers.event:trigger("event_add_combat_feed_message", text)
+		if not (mod:get("ignore_bots") and is_bot(player)) then
+			local unit = player.player_unit
+			if unit then
+				local current_state = get_disabled_state(unit)
+				local previous_state = mod._last_player_states[unique_id]
+				
+				if current_state ~= previous_state then
+					if current_state then
+						local clean_state = string.gsub(current_state, "_", " ")
+						clean_state = string.gsub(clean_state, "(%a)([%w_']*)", function(first, rest) return string.upper(first) .. rest end)
+						
+						local player_name = CombatFeed._get_unit_presentation_name(CombatFeed, unit) or player:name()
+						local text = mod:localize("disabled_feed_message", player_name, clean_state)
+						
+						if mod:get("disabled_show_killfeed") then
+							Managers.event:trigger("event_add_combat_feed_message", text)
+						end
+						
+						send_notification_packet(player, text, nil, "disabled_color", mod:get("disabled_show_notification"))
+						
+						if mod:get("disabled_show_chat") then
+							mod:echo(text)
+						end
 					end
-					
-					send_notification_packet(player, text, nil, "disabled_color", mod:get("disabled_show_notification"))
-					
-					if mod:get("disabled_show_chat") then
-						mod:echo(text)
-					end
+					mod._last_player_states[unique_id] = current_state
 				end
-				mod._last_player_states[unique_id] = current_state
 			end
 		end
 	end
@@ -481,6 +498,10 @@ local function handle_interaction_stopped(self, result, interactor_unit)
 				local interactor_player = Managers.player:player_by_unit(interactor)
 				
 				if interactee_player and interactor_player then
+					if mod:get("ignore_bots") and (is_bot(interactee_player) or is_bot(interactor_player)) then
+						return
+					end
+					
 					local interactor_name = CombatFeed._get_unit_presentation_name(CombatFeed, interactor) or interactor_player:name()
 					local interactee_name = CombatFeed._get_unit_presentation_name(CombatFeed, interactee_unit) or interactee_player:name()
 					local text = mod:localize("helped_feed_message", interactor_name, interactee_name)
