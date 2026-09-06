@@ -1,4 +1,4 @@
-Standalone mod that shows player and teammate deaths and downs directly in your killfeed and notifications. It is fully customizable so you can tweak exactly what information you want to see. You can toggle options to show the attack type, damage taken, and even the CC state of players. You can also adjust the notification duration and color to fit your preferences!
+Shows player and teammate downs and deaths in the killfeed, including damage taken, attack type, and status.
 
 [b]Options:[/b]
 
