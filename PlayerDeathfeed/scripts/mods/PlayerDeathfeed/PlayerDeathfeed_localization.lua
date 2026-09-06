@@ -3,7 +3,7 @@ local localizations = {
 		en = "Player Deathfeed",
 	},
 	mod_description = {
-		en = "Shows player downs and deaths in killfeed and/or popup notifications.",
+		en = "Shows player and teammate downs and deaths in the killfeed, including damage taken, attack type, and status.",
 	},
 	tab_deaths_knockdowns = {
 		en = "Deaths & Knockdowns",
