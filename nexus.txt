@@ -1,0 +1,19 @@
+Standalone mod that shows player and teammate deaths and downs directly in your killfeed and notifications. It is fully customizable so you can tweak exactly what information you want to see. You can toggle options to show the attack type, damage taken, and even the CC state of players. You can also adjust the notification duration and color to fit your preferences!
+
+[b]Options:[/b]
+
+[b]General[/b]
+- Ignore Bots
+
+[b]Deaths & Knockdowns[/b]
+- Report in Killfeed (with Private Chat Echo)
+- Report in Notifications (with Display Duration)
+- Show Options (Attack Information, Damage Amount, Player CC State)
+- Detailed Report (with Recording Period)
+- Notification Colors (Knock Down, Death)
+
+[b]Disabled & Helped[/b]
+- Disabled State Options (Report in Killfeed, Report in Notifications, Echo in Chat, Ignore Pushed Off Ledge, Custom Color)
+- Helped Up Options (Report in Killfeed, Report in Notifications, Hide Self-Notification, Echo in Chat, Custom Color)
+
+[b]Links:[/b] [url=https://github.com/MaddyMarv/Player-Deathfeed]Source Code[/url] | [url=https://www.nexusmods.com/profile/indicabunny]Nexus Mods Profile[/url] | [url=https://ko-fi.com/indicabunny]Support Me on Ko-fi[/url]
