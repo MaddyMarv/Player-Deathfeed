@@ -187,7 +187,9 @@ function mod.on_setting_changed(setting_id)
 	if not setting_id:match("note_time") then
         return
     end   
-	NoteFeed._notification_templates.custom.total_time = mod:get("note_time")
+	if NoteFeed and NoteFeed._notification_templates and NoteFeed._notification_templates.custom then
+		NoteFeed._notification_templates.custom.total_time = mod:get("note_time")
+	end
 end
 
 function parse_damage_history(damage_hist, player)
@@ -443,6 +445,10 @@ local function send_notification_packet(player, line_1, line_2, color_setting_na
 end
 
 mod.update = function(dt)
+	if not mod:is_enabled() then
+		return
+	end
+
 	local player_manager = Managers.player
 	if not player_manager then return end
 	local players = player_manager:players()
@@ -538,3 +544,15 @@ end)
 mod:hook_safe("PlayerInteracteeExtension", "stopped", function(self, result, interactor_unit)
 	handle_interaction_stopped(self, result, interactor_unit)
 end)
+
+mod.on_disabled = function(initial_call)
+	table.clear(mod._last_player_states)
+	table.clear(already_reported)
+	table.clear(damage_history)
+end
+
+mod.on_unload = function(exit_game)
+	table.clear(mod._last_player_states)
+	table.clear(already_reported)
+	table.clear(damage_history)
+end
