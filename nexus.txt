@@ -1,7 +1,7 @@
 Shows player and teammate downs and deaths in the killfeed, including damage taken, attack type, and status.
 
-[b]Options:[/b]
-
+[b]Mod Settings / Commands:[/b]
+[spoiler]
 [b]General[/b]
 - Ignore Bots
 
@@ -15,6 +15,7 @@ Shows player and teammate downs and deaths in the killfeed, including damage tak
 [b]Disabled & Helped[/b]
 - Disabled State Options (Report in Killfeed, Report in Notifications, Echo in Chat, Ignore Pushed Off Ledge, Custom Color)
 - Helped Up Options (Report in Killfeed, Report in Notifications, Hide Self-Notification, Echo in Chat, Custom Color)
+[/spoiler]
 
 [b]Links:[/b]
 [url=https://github.com/MaddyMarv/Player-Deathfeed]Source Code[/url] | [url=https://www.nexusmods.com/profile/indicabunny]Nexus Mods Profile[/url] | [url=https://ko-fi.com/indicabunny]Support Me on Ko-fi[/url]
