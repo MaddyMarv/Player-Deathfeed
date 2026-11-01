@@ -192,7 +192,7 @@ function mod.on_setting_changed(setting_id)
 	end
 end
 
-function parse_damage_history(damage_hist, player)
+local function parse_damage_history(damage_hist, player)
 	local text = ""
 	local dense_text = {}
 	local total_damage = 0
