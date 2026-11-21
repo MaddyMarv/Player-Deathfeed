@@ -4,24 +4,17 @@ local AttackSettings = require("scripts/settings/damage/attack_settings")
 local attack_results = AttackSettings.attack_results
 
 local CombatFeed = require("scripts/ui/hud/elements/combat_feed/hud_element_combat_feed")
-local NotificationFeed =
-	require("scripts/ui/constant_elements/elements/notification_feed/constant_element_notification_feed")
-local HudElementCombatFeedSettings = require("scripts/ui/hud/elements/combat_feed/hud_element_combat_feed_settings")
 local Breed = require("scripts/utilities/breed")
 local Breeds = require("scripts/settings/breed/breeds")
-local UISettings = require("scripts/settings/ui/ui_settings")
 local TextUtilities = require("scripts/utilities/ui/text")
 
 local PlayerUnitStatus = require("scripts/utilities/attack/player_unit_status")
 
-local LocalizationManager = require("scripts/managers/localization/localization_manager")
 local loc_manager = Managers.localization
 
 local my_enemy_default_color = Color.pink(255, true)
-local enemy_default_color = Color.red(255, true)
 local NoteFeed
 
-local PlayerUnitHealthExtension
 local already_reported = {}
 local damage_history = {}
 
