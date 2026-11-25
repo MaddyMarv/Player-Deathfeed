@@ -10,15 +10,13 @@ Shows player and teammate downs and deaths in the killfeed, including damage tak
 - Ignore Bots
 
 **Deaths & Knockdowns**
-- Report in Killfeed (with Private Chat Echo)
-- Report in Notifications (with Display Duration)
-- Show Options (Attack Information, Damage Amount, Player CC State)
-- Detailed Report (with Recording Period)
-- Notification Colors (Knock Down, Death)
+- Killfeed Options (Report in Killfeed, Echo Killfeed in Private Chat, Show Attack Information, Show Damage Amount)
+- Popup Notification Options (Report in Notifications, Notification Display Duration (sec), Show Attack Information, Show Damage Amount, Show Disabled State, Detailed Report, Detailed Report Recording Period (sec))
+- Notification Colors (Knock Down Color, Death Color)
 
 **Disabled & Helped**
-- Disabled State Options (Report in Killfeed, Report in Notifications, Echo in Chat, Ignore Pushed Off Ledge, Custom Color)
-- Helped Up Options (Report in Killfeed, Report in Notifications, Hide Self-Notification, Echo in Chat, Custom Color)
+- Disabled State Tracking (Report in Killfeed, Report in Notifications, Echo in Private Chat, Ignore Catapulted State, Disabled Notification Color)
+- Helped Up Tracking (Report in Killfeed, Report in Notifications, Hide Notification When You Are Helped, Echo in Private Chat, Helped Up Notification Color)
 </details>
 
 🔗 **Links:** [Source Code](https://github.com/MaddyMarv/Player-Deathfeed) | [Nexus Mods Profile](https://www.nexusmods.com/profile/indicabunny) | [Support Me on Ko-fi](https://ko-fi.com/indicabunny)
